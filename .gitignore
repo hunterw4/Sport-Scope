@@ -1,0 +1,13 @@
+# Python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments (if you use one)
+venv/
+env/
+.env
+
+# macOS junk
+.DS_Store
