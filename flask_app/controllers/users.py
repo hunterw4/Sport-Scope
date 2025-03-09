@@ -1,29 +1,66 @@
 # User routing will go here, home, account, etc...
+from dateutil.utils import today
 from flask import Flask, render_template
 from flask_app import app
 import requests
 import os
+from datetime import datetime
 
+# Creating current day variable for the scores URL:
+date_obj = datetime.strptime("2025-03-08", "%Y-%m-%d")
+TODAY = date_obj.strftime("%Y/%m/%d")
+
+# Sports API KEY
 API_KEY = os.environ.get('NEWS_API')
+SPORTS_API = os.environ.get('SPORTS_API')
 
-BASE_URL = "https://newsapi.org/v2/top-headlines"
+# Endpoints
+NEWS_BASE_URL = "https://newsapi.org/v2/top-headlines"
+MLB_URL = f"https://api.sportradar.com/mlb/trial/v8/en/games/{TODAY}/boxscore.json?api_key={SPORTS_API}"
 
-# Parameters for the request
-params = {
+
+# Parameters for the news request
+news_params = {
     "sources": "espn, bleacher-report, sports-illustrated",         # ESPN source ID
     "apiKey": API_KEY,        # API key
     "pageSize": 2,
 }
 
-# Make the GET request
-response = requests.get(BASE_URL, params=params)
-data = response.json()
-print(data)
+# MLB Scores params
+mlb_headers = {"accept": "application/json"}
+
+mlb_response = requests.get(MLB_URL, headers=mlb_headers)
+mlb_data = mlb_response.json()
+
+# Created empty list to create into a dictionary list to pass into jinja
+cleaned_games = []
+
+# Only gathering 5 games to fit the screen
+for i, game in enumerate(mlb_data["league"]["games"]):
+    if i >= 5:  # Stop after processing 5 games
+        break
+    game_data = game["game"]
+    cleaned_game = {
+        "away_team": game_data["away"]["name"],
+        "home_team": game_data["home"]["name"],
+        "away_runs": game_data["away"]["runs"],
+        "home_runs": game_data["home"]["runs"],
+        "is_final": game_data["status"] == "closed"  # True if closed, False otherwise
+    }
+    cleaned_games.append(cleaned_game)
+
+mlb_games = {"games": cleaned_games}
+
+
+# Making the GET request for news
+news_response = requests.get(NEWS_BASE_URL, params=news_params)
+news_data = news_response.json()
 
 
 @app.route('/')
 def home():
-    return render_template('index.html', article1=data['articles'][0], article2=data['articles'][1])
+    return render_template('index.html', article1=news_data['articles'][0], article2=news_data['articles'][1],
+                           mlb=mlb_games)
 
 
 @app.route('/sign-up')

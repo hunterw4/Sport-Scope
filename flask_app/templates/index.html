@@ -48,10 +48,18 @@
 
 <body>
 
-    <div class="container">
-        <div class="scores">
-            <p>Live scores will go here</p>
-        </div>
+    <div class="score-container">
+        {% for game in mlb.games %}
+            <div class="score-item">
+                <p>{{ game.away_team }}: {{ game.away_runs }}
+                </p>
+                <p>{{ game.home_team }}: {{ game.home_runs }}</p>
+                <p> {% if game.is_final %}- Final{% else %}- In Progress/Scheduled{% endif %}</p>
+            </div>
+        {% endfor %}
+
+    </div>
+    
 
     </div>
     

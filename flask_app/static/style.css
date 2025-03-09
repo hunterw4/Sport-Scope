@@ -87,11 +87,31 @@ hr {
     background: #666;
 }
 
-.scores {
-    border: 1px solid black;
-    background-color: rgba(230, 230, 230, 0.787);
-    width: 1000px;
-    height: 100px;
+.score-container {
+    width: 100%;
+    background-color: rgb(246, 246, 246);
+    border: 2px solid black;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin: 0 auto;
+    border-radius: 4px;
+}
+
+.score-item {
+    font-size: 1em;
+    color: #222;
+    text-align: center;
+}
+
+.team {
+    font-weight: bold;
+}
+
+.score {
+    margin: 0 5px;
 }
 
 .nav-link {
