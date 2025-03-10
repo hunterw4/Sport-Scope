@@ -77,3 +77,14 @@ def login():
 @app.route('/nfl')
 def nfl():
     return render_template('nfl.html', mlb=mlb_games)
+
+@app.route('/nfl/<id>')
+def team_roster(id):
+    url = f"https://api.sportradar.com/nfl/official/trial/v7/en/teams/{id}/full_roster.json?api_key={SPORTS_API}"
+    headers = {"accept": "application/json"}
+    response = requests.get(url, headers=headers)
+    roster_data = response.json()
+    
+    coaches = roster_data.get('coaches', [])
+    players = roster_data.get('players', [])
+    return render_template('roster.html', mlb=mlb_games, coaches=coaches, players=players)
