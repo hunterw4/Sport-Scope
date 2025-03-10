@@ -4,11 +4,12 @@ from flask import Flask, render_template
 from flask_app import app
 import requests
 import os
-from datetime import datetime
+from datetime import date
 
-# Creating current day variable for the scores URL:
-date_obj = datetime.strptime("2025-03-08", "%Y-%m-%d")
-TODAY = date_obj.strftime("%Y/%m/%d")
+# Get today's date
+raw_today = date.today()
+
+TODAY = raw_today.strftime("%Y/%m/%d")
 
 # Sports API KEY
 API_KEY = os.environ.get('NEWS_API')
@@ -36,9 +37,7 @@ mlb_data = mlb_response.json()
 cleaned_games = []
 
 # Only gathering 5 games to fit the screen
-for i, game in enumerate(mlb_data["league"]["games"]):
-    if i >= 5:  # Stop after processing 5 games
-        break
+for game in mlb_data["league"]["games"]:
     game_data = game["game"]
     cleaned_game = {
         "away_team": game_data["away"]["name"],
@@ -73,3 +72,8 @@ def signup():
 def login():
     # Login will go here
     return render_template('login.html')
+
+
+@app.route('/nfl')
+def nfl():
+    return render_template('nfl.html', mlb=mlb_games)

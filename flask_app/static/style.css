@@ -27,6 +27,42 @@ body {
     box-shadow: -4px 4px 54px 20px rgba(173,216,230,1);
 }
 
+
+.league-container {
+    margin: 50px;
+    margin-left: 350px;
+    display: flex;
+    width: 50%;
+    flex-direction: column;
+    background-color: rgba(230, 230, 230, 0.787);
+    border: 3px solid black;
+    align-items: center;
+    border-radius: 1%;
+    /* https://www.cssmatic.com/box-shadow */
+    -webkit-box-shadow: -4px 4px 54px 20px rgba(173,216,230,1);
+    -moz-box-shadow: -4px 4px 54px 20px rgba(173,216,230,1);
+    box-shadow: -4px 4px 54px 20px rgba(173,216,230,1);
+}
+.conf {
+    margin: 10px;
+    background-color: white !important;
+    border: 3px solid black;
+}
+.team-logo {
+    height: 35px;
+    width: auto;
+
+}
+
+.plain-link {
+    text-decoration: none; 
+    color: inherit; 
+}
+.plain-link:hover {
+    text-decoration: none; 
+    color: #007bff;
+}
+
 .articleImg {
     border: 2px solid black;
 }
@@ -88,31 +124,52 @@ hr {
 }
 
 .score-container {
+    top: 0;
+    left: 0;
     width: 100%;
-    background-color: rgb(246, 246, 246);
-    border: 2px solid black;
-    padding: 10px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
+    height: 40px; 
+    background-color: #333; 
+    color: white;
+    display: flex; 
     align-items: center;
-    margin: 0 auto;
-    border-radius: 4px;
+    overflow-x: auto; 
+    white-space: nowrap; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
+    scrollbar-width: thin;
 }
+
 
 .score-item {
-    font-size: 1em;
-    color: #222;
-    text-align: center;
+    display: inline-flex; 
+    align-items: center;
+    padding: 0 15px;
+    border-right: 1px solid #555; 
 }
 
-.team {
-    font-weight: bold;
+
+
+.team-score {
+    margin-right: 10px; 
 }
 
-.score {
-    margin: 0 5px;
+.team-score span {
+    font-size: 14px; 
+    margin-right: 5px; 
 }
+
+.team-score .away {
+    font-weight: bold; 
+}
+
+.status {
+    font-size: 12px;
+    color: #ccc; 
+}
+
+.status.final {
+    color: #28a745; 
+}
+
 
 .nav-link {
     color: black;

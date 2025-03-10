@@ -22,9 +22,9 @@
                         Sports
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <li><a class="dropdown-item" href="#">NFL</a></li>
-                        <li><a class="dropdown-item" href="#">MLB</a></li>
-                        <li><a class="dropdown-item" href="#">PGA</a></li>
+                        <li><a class="dropdown-item" href="/nfl">NFL</a></li>
+                        <li><a class="dropdown-item" href="#">Coming Soon</a></li>
+                        <li><a class="dropdown-item" href="#">Coming Soon</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
@@ -51,13 +51,15 @@
     <div class="score-container">
         {% for game in mlb.games %}
             <div class="score-item">
-                <p>{{ game.away_team }}: {{ game.away_runs }}
-                </p>
-                <p>{{ game.home_team }}: {{ game.home_runs }}</p>
-                <p> {% if game.is_final %}- Final{% else %}- In Progress/Scheduled{% endif %}</p>
+                <div class="team-score">
+                    <span class="away">{{ game.away_team }}: {{ game.away_runs }}</span>
+                    <span>{{ game.home_team }}: {{ game.home_runs }}</span>
+                </div>
+                <div class="status {% if game.is_final %}final{% endif %}">
+                    {% if game.is_final %}Final{% else %}Live/Sched{% endif %}
+                </div>
             </div>
         {% endfor %}
-
     </div>
     
 

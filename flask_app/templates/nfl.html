@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+</head>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #fffffff7 !important;">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+            <ul class="navbar-nav w-100 justify-content-evenly">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <button class="nav-link dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        Sports
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" href="#">NFL</a></li>
+                        <li><a class="dropdown-item" href="#">Coming Soon</a></li>
+                        <li><a class="dropdown-item" href="#">Coming Soon</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <img src="{{ url_for('static', filename='images/logo.png') }}" height="80px">
+                </li>
+                <li class="nav-item">
+                    {% if logged_in %}
+                        <a class="nav-link button" href="/logout">Logout</a>
+                    {% elif not logged_in %}
+                        <a class="nav-link" href="/login">Login</a>
+                        <li class="nav-item">
+                            <a class="nav-link button" href="/sign-up">Sign Up!</a>
+                        </li>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+
+<body>
+
+    <div class="score-container">
+        {% for game in mlb.games %}
+            <div class="score-item">
+                <div class="team-score">
+                    <span class="away">{{ game.away_team }}: {{ game.away_runs }}</span>
+                    <span>{{ game.home_team }}: {{ game.home_runs }}</span>
+                </div>
+                <div class="status {% if game.is_final %}final{% endif %}">
+                    {% if game.is_final %}Final{% else %}Live/Sched{% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+<div class="league-container mt-4">
+<div class="conf text-center">
+    <img src="{{ url_for('static', filename='images/afl.gif') }}" height="200px" class="d-block mx-auto" alt="AFC Logo">
+</div>
+
+<!-- AFC East -->
+<table class="table">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col" class="text-center">AFC East</th>
+        <th class="text-center">Team</th>
+        <th class="text-center">Make favorite team</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-center"><img class="team-logo d-block mx-auto" src="{{ url_for('static', filename='images/bills.png') }}" alt="Bills Logo"></td>
+        <td class="text-center"><a href="/team/buffalo-bills" class="plain-link">Buffalo Bills</a></td>
+        <td class="text-center"><a href="/favorite" class="plain-link">Favorite</a></td>
+      </tr>
+      <tr>
+        <td class="text-center"><img class="team-logo d-block mx-auto" src="{{ url_for('static', filename='images/dolphins.png') }}" alt="Dolphins Logo"></td>
+        <td class="text-center"><a href="/team/miami-dolphins" class="plain-link">Miami Dolphins</a></td>
+        <td class="text-center"><a href="/favorite" class="plain-link">Favorite</a></td>
+      </tr>
+      <tr>
+        <td class="text-center"><img class="team-logo d-block mx-auto" src="{{ url_for('static', filename='images/patriots.png') }}" alt="Patriots Logo"></td>
+        <td class="text-center"><a href="/team/new-england-patriots" class="plain-link">New England Patriots</a></td>
+        <td class="text-center"><a href="/favorite" class="plain-link">Favorite</a></td>
+      </tr>
+      <tr>
+        <td class="text-center"><img class="team-logo d-block mx-auto" src="{{ url_for('static', filename='images/jets.png') }}" alt="Jets Logo"></td>
+        <td class="text-center"><a href="/team/new-york-jets" class="plain-link">New York Jets</a></td>
+        <td class="text-center"><a href="/favorite" class="plain-link">Favorite</a></td>
+      </tr>
+    </tbody>
+</table>
+
+<!-- AFC North -->
+<table class="table">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col" class="text-center">AFC North</th>
+        <th class="text-center">Team</th>
+        <th class="text-center">Make favorite team</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-center"><img class="team-logo d-block mx-auto" src="{{ url_for('static', filename='images/ravens.png') }}" alt="Ravens Logo"></td>
+        <td class="text-center"><a href="/team/baltimore-ravens" class="plain-link">Baltimore Ravens</a></td>
+        <td class="text-center"><a href="/favorite" class="plain-link">Favorite</a></td>
+      </tr>
+      <tr>
+        <td class="text-center"><img class="team-logo d-block mx-auto" src="{{ url_for('static', filename='images/bengals.png') }}" alt="Bengals Logo"></td>
+        <td class="text-center"><a href="/team/cincinnati-bengals" class="plain-link">Cincinnati Bengals</a></td>
+        <td class="text-center"><a href="/favorite" class="plain-link">Favorite</a></td>
+      </tr>
+      <tr>
+        <td class="text-center"><img class="team-logo d-block mx-auto" src="{{ url_for('static', filename='images/browns.png') }}" alt="Browns Logo"></td>
+        <td class="text-center"><a href="/team/cleveland-browns" class="plain-link">Cleveland Browns</a></td>
+        <td class="text-center"><a href="/favorite" class="plain-link">Favorite</a></td>
+      </tr>
+      <tr>
+        <td class="text-center"><img class="team-logo d-block mx-auto" src="{{ url_for('static', filename='images/steelers.png') }}" alt="Steelers Logo"></td>
+        <td class="text-center"><a href="/team/pittsburgh-steelers" class="plain-link">Pittsburgh Steelers</a></td>
+        <td class="text-center"><a href="/favorite" class="plain-link">Favorite</a></td>
+      </tr>
+    </tbody>
+</table>
+
+<!-- AFC South -->
+<table class="table">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col" class="text-center">AFC South</th>
+        <th class="text-center">Team</th>
+        <th class="text-center">Make favorite team</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-center"><img class="team-logo d-block mx-auto" src="{{ url_for('static', filename='images/texans.png') }}" alt="Texans Logo"></td>
+        <td class="text-center"><a href="/team/houston-texans" class="plain-link">Houston Texans</a></td>
+        <td class="text-center"><a href="/favorite" class="plain-link">Favorite</a></td>
+      </tr>
+      <tr>
+        <td class="text-center"><img class="team-logo d-block mx-auto" src="{{ url_for('static', filename='images/colts.png') }}" alt="Colts Logo"></td>
+        <td class="text-center"><a href="/team/indianapolis-colts" class="plain-link">Indianapolis Colts</a></td>
+        <td class="text-center"><a href="/favorite" class="plain-link">Favorite</a></td>
+      </tr>
+      <tr>
+        <td class="text-center"><img class="team-logo d-block mx-auto" src="{{ url_for('static', filename='images/jaguars.png') }}" alt="Jaguars Logo"></td>
+        <td class="text-center"><a href="/team/jacksonville-jaguars" class="plain-link">Jacksonville Jaguars</a></td>
+        <td class="text-center"><a href="/favorite" class="plain-link">Favorite</a></td>
+      </tr>
+      <tr>
+        <td class="text-center"><img class="team-logo d-block mx-auto" src="{{ url_for('static', filename='images/titans.png') }}" alt="Titans Logo"></td>
+        <td class="text-center"><a href="/team/tennessee-titans" class="plain-link">Tennessee Titans</a></td>
+        <td class="text-center"><a href="/favorite" class="plain-link">Favorite</a></td>
+      </tr>
+    </tbody>
+</table>
+
+<!-- AFC West -->
+<table class="table">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col" class="text-center">AFC West</th>
+        <th class="text-center">Team</th>
+        <th class="text-center">Make favorite team</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-center"><img class="team-logo d-block mx-auto" src="{{ url_for('static', filename='images/broncos.png') }}" alt="Broncos Logo"></td>
+        <td class="text-center"><a href="/team/denver-broncos" class="plain-link">Denver Broncos</a></td>
+        <td class="text-center"><a href="/favorite" class="plain-link">Favorite</a></td>
+      </tr>
+      <tr>
+        <td class="text-center"><img class="team-logo d-block mx-auto" src="{{ url_for('static', filename='images/chiefs.png') }}" alt="Chiefs Logo"></td>
+        <td class="text-center"><a href="/team/kansas-city-chiefs" class="plain-link">Kansas City Chiefs</a></td>
+        <td class="text-center"><a href="/favorite" class="plain-link">Favorite</a></td>
+      </tr>
+      <tr>
+        <td class="text-center"><img class="team-logo d-block mx-auto" src="{{ url_for('static', filename='images/raiders.png') }}" alt="Raiders Logo"></td>
+        <td class="text-center"><a href="/team/las-vegas-raiders" class="plain-link">Las Vegas Raiders</a></td>
+        <td class="text-center"><a href="/favorite" class="plain-link">Favorite</a></td>
+      </tr>
+      <tr>
+        <td class="text-center"><img class="team-logo d-block mx-auto" src="{{ url_for('static', filename='images/chargers.png') }}" alt="Chargers Logo"></td>
+        <td class="text-center"><a href="/team/los-angeles-chargers" class="plain-link">Los Angeles Chargers</a></td>
+        <td class="text-center"><a href="/favorite" class="plain-link">Favorite</a></td>
+      </tr>
+    </tbody>
+</table>
+
+<div class="conf text-center">
+    <img src="{{ url_for('static', filename='images/nfc.gif') }}" height="200px" class="d-block mx-auto" alt="NFC Logo">
+</div>
+
+<!-- NFC East -->
+<table class="table">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col" class="text-center">NFC East</th>
+        <th class="text-center">Team</th>
+        <th class="text-center">Make favorite team</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-center"><img class="team-logo d-block mx-auto" src="{{ url_for('static', filename='images/cowboys.png') }}" alt="Cowboys Logo"></td>
+        <td class="text-center"><a href="/team/dallas-cowboys" class="plain-link">Dallas Cowboys</a></td>
+        <td class="text-center"><a href="/favorite" class="plain-link">Favorite</a></td>
+      </tr>
+      <tr>
+        <td class="text-center"><img class="team-logo d-block mx-auto" src="{{ url_for('static', filename='images/giants.png') }}" alt="Giants Logo"></td>
+        <td class="text-center"><a href="/team/new-york-giants" class="plain-link">New York Giants</a></td>
+        <td class="text-center"><a href="/favorite" class="plain-link">Favorite</a></td>
+      </tr>
+      <tr>
+        <td class="text-center"><img class="team-logo d-block mx-auto" src="{{ url_for('static', filename='images/eagles.png') }}" alt="Eagles Logo"></td>
+        <td class="text-center"><a href="/team/philadelphia-eagles" class="plain-link">Philadelphia Eagles</a></td>
+        <td class="text-center"><a href="/favorite" class="plain-link">Favorite</a></td>
+      </tr>
+      <tr>
+        <td class="text-center"><img class="team-logo d-block mx-auto" src="{{ url_for('static', filename='images/commanders.png') }}" alt="Commanders Logo"></td>
+        <td class="text-center"><a href="/team/washington-commanders" class="plain-link">Washington Commanders</a></td>
+        <td class="text-center"><a href="/favorite" class="plain-link">Favorite</a></td>
+      </tr>
+    </tbody>
+</table>
+
+<!-- NFC North -->
+<table class="table">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col" class="text-center">NFC North</th>
+        <th class="text-center">Team</th>
+        <th class="text-center">Make favorite team</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-center"><img class="team-logo d-block mx-auto" src="{{ url_for('static', filename='images/bears.png') }}" alt="Bears Logo"></td>
+        <td class="text-center"><a href="/team/chicago-bears" class="plain-link">Chicago Bears</a></td>
+        <td class="text-center"><a href="/favorite" class="plain-link">Favorite</a></td>
+      </tr>
+      <tr>
+        <td class="text-center"><img class="team-logo d-block mx-auto" src="{{ url_for('static', filename='images/lions.png') }}" alt="Lions Logo"></td>
+        <td class="text-center"><a href="/team/detroit-lions" class="plain-link">Detroit Lions</a></td>
+        <td class="text-center"><a href="/favorite" class="plain-link">Favorite</a></td>
+      </tr>
+      <tr>
+        <td class="text-center"><img class="team-logo d-block mx-auto" src="{{ url_for('static', filename='images/packers.png') }}" alt="Packers Logo"></td>
+        <td class="text-center"><a href="/team/green-bay-packers" class="plain-link">Green Bay Packers</a></td>
+        <td class="text-center"><a href="/favorite" class="plain-link">Favorite</a></td>
+      </tr>
+      <tr>
+        <td class="text-center"><img class="team-logo d-block mx-auto" src="{{ url_for('static', filename='images/vikings.png') }}" alt="Vikings Logo"></td>
+        <td class="text-center"><a href="/team/minnesota-vikings" class="plain-link">Minnesota Vikings</a></td>
+        <td class="text-center"><a href="/favorite" class="plain-link">Favorite</a></td>
+      </tr>
+    </tbody>
+</table>
+
+<!-- NFC South -->
+<table class="table">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col" class="text-center">NFC South</th>
+        <th class="text-center">Team</th>
+        <th class="text-center">Make favorite team</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-center"><img class="team-logo d-block mx-auto" src="{{ url_for('static', filename='images/falcons.png') }}" alt="Falcons Logo"></td>
+        <td class="text-center"><a href="/team/atlanta-falcons" class="plain-link">Atlanta Falcons</a></td>
+        <td class="text-center"><a href="/favorite" class="plain-link">Favorite</a></td>
+      </tr>
+      <tr>
+        <td class="text-center"><img class="team-logo d-block mx-auto" src="{{ url_for('static', filename='images/panthers.png') }}" alt="Panthers Logo"></td>
+        <td class="text-center"><a href="/team/carolina-panthers" class="plain-link">Carolina Panthers</a></td>
+        <td class="text-center"><a href="/favorite" class="plain-link">Favorite</a></td>
+      </tr>
+      <tr>
+        <td class="text-center"><img class="team-logo d-block mx-auto" src="{{ url_for('static', filename='images/saints.png') }}" alt="Saints Logo"></td>
+        <td class="text-center"><a href="/team/new-orleans-saints" class="plain-link">New Orleans Saints</a></td>
+        <td class="text-center"><a href="/favorite" class="plain-link">Favorite</a></td>
+      </tr>
+      <tr>
+        <td class="text-center"><img class="team-logo d-block mx-auto" src="{{ url_for('static', filename='images/buccaneers.png') }}" alt="Buccaneers Logo"></td>
+        <td class="text-center"><a href="/team/tampa-bay-buccaneers" class="plain-link">Tampa Bay Buccaneers</a></td>
+        <td class="text-center"><a href="/favorite" class="plain-link">Favorite</a></td>
+      </tr>
+    </tbody>
+</table>
+
+<!-- NFC West -->
+<table class="table">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col" class="text-center">NFC West</th>
+        <th class="text-center">Team</th>
+        <th class="text-center">Make favorite team</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-center"><img class="team-logo d-block mx-auto" src="{{ url_for('static', filename='images/cardinals.png') }}" alt="Cardinals Logo"></td>
+        <td class="text-center"><a href="/team/arizona-cardinals" class="plain-link">Arizona Cardinals</a></td>
+        <td class="text-center"><a href="/favorite" class="plain-link">Favorite</a></td>
+      </tr>
+      <tr>
+        <td class="text-center"><img class="team-logo d-block mx-auto" src="{{ url_for('static', filename='images/rams.png') }}" alt="Rams Logo"></td>
+        <td class="text-center"><a href="/team/los-angeles-rams" class="plain-link">Los Angeles Rams</a></td>
+        <td class="text-center"><a href="/favorite" class="plain-link">Favorite</a></td>
+      </tr>
+      <tr>
+        <td class="text-center"><img class="team-logo d-block mx-auto" src="{{ url_for('static', filename='images/49ers.png') }}" alt="49ers Logo"></td>
+        <td class="text-center"><a href="/team/san-francisco-49ers" class="plain-link">San Francisco 49ers</a></td>
+        <td class="text-center"><a href="/favorite" class="plain-link">Favorite</a></td>
+      </tr>
+      <tr>
+        <td class="text-center"><img class="team-logo d-block mx-auto" src="{{ url_for('static', filename='images/seahawks.png') }}" alt="Seahawks Logo"></td>
+        <td class="text-center"><a href="/team/seattle-seahawks" class="plain-link">Seattle Seahawks</a></td>
+        <td class="text-center"><a href="/favorite" class="plain-link">Favorite</a></td>
+      </tr>
+    </tbody>
+</table>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
