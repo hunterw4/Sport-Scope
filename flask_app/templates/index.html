@@ -72,10 +72,15 @@
                     <img src="{{article1.urlToImage}}" height="500px" alt="">
                 </div>
                 <div class="newsContent">
+                    {% if article1 is not none %}
                     <h3>{{article1.title}}</h3>
                     <em><h6>Author: {{article1.author}}</h6></em>
                     <p>{{article1.description}}</p>
                     <a href="{{article1.url}}" class="article-link">Read Full Article</a>
+                    {% else%}
+                    <h3>Article not found</h3>
+                   
+                    {%endif%}
                 </div>
             </div>
             <hr>
@@ -83,11 +88,16 @@
                 <div class="articleImg">
                     <img src="{{article2.urlToImage}}" height="500px" alt="">
                 </div>
-                <div class="newsContent">            
+                <div class="newsContent">  
+                    {% if article2 is not none %}          
                     <h4>{{article2.title}}</h4>
                     <em><h6>Author: {{article2.author}}</h6></em>
                     <p>{{article2.description}}</p>
                     <a href="{{article2.url}}" class="article-link">Read Full Article</a>
+                    {% else%}
+                    <h3>Article not found</h3>
+                    
+                    {%endif%}
                 </div>
             </div>
         </div>

@@ -1,6 +1,6 @@
 # User routing will go here, home, account, etc...
 from dateutil.utils import today
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect
 from flask_app import app
 import requests
 import os
@@ -27,11 +27,23 @@ news_params = {
     "pageSize": 2,
 }
 
+# Define Default Data Incase API response is bad to avoid crashing
+mlb_data = {
+    "league": {
+        "games": []
+        }
+    }
+
+news_data = {
+    "articles": [None, None]
+    }
+
 # MLB Scores params
 mlb_headers = {"accept": "application/json"}
 
 mlb_response = requests.get(MLB_URL, headers=mlb_headers)
-mlb_data = mlb_response.json()
+if mlb_response.ok:
+    mlb_data = mlb_response.json()
 
 # Created empty list to create into a dictionary list to pass into jinja
 cleaned_games = []
@@ -53,7 +65,8 @@ mlb_games = {"games": cleaned_games}
 
 # Making the GET request for news
 news_response = requests.get(NEWS_BASE_URL, params=news_params)
-news_data = news_response.json()
+if news_response.ok:
+    news_data = news_response.json()
 
 
 @app.route('/')
@@ -88,3 +101,10 @@ def team_roster(id):
     coaches = roster_data.get('coaches', [])
     players = roster_data.get('players', [])
     return render_template('roster.html', mlb=mlb_games, coaches=coaches, players=players)
+
+@app.route('/favorite/<id>')
+def favorite_team_pick(id):
+    # save to database
+    print(id)
+
+    return redirect('/nfl')
