@@ -49,20 +49,26 @@
         <div class="card text-dark" id="signup-card">
             <h2 id="register">Register</h2>
             <!-- Flash warnings -->
-            {% with messages = get_flashed_messages(with_categories=True) %}
-                {% if messages %}
-                  {% for category, message in messages %}
-                        {% if category != 'login' %}
-                        <p class="error"> {{ message }}</p>
-                        {% endif %}
+            {% with messages = get_flashed_messages(category_filter =
+                ['register_error', 'register_success']) %} {% if messages %} {%
+                with error_messages = get_flashed_messages(category_filter =
+                ['register_error']) %}
+                <div
+                  class="alert alert-{{'danger' if error_messages else 'success'}}"
+                  id="register-errors"
+                >
+                  {% endwith %} {% for message in messages %}
+  
+                  <div>{{ message }}</div>
+  
                   {% endfor %}
-                {% endif %}
-            {% endwith %}
+                </div>
+                {% endif %} {% endwith %}
 
             <form action="/register" method="POST">
                 <div class="form-group">
-                <label for="fname">Name</label>
-                <input type="text" class="form-control" id="fname" name="name" value="{{ session_name }}">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{ session_name }}">
       
                 <label for="exampleInputEmail1">Email address</label>
                 <input type="email" class="form-control" id="exampleInputEmail1" name="email" value="{{ session_email_input }}" aria-describedby="emailHelp" placeholder="Enter email">

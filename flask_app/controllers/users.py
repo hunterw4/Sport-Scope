@@ -1,10 +1,13 @@
 # User routing will go here, home, account, etc...
 from dateutil.utils import today
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template, redirect, request, flash, session
+from flask_bcrypt import Bcrypt 
 from flask_app import app
+from flask_app.models.user import User
 import requests
 import os
 from datetime import date
+bcrypt = Bcrypt()
 
 # Get today's date
 raw_today = date.today()
@@ -102,9 +105,82 @@ def team_roster(id):
     players = roster_data.get('players', [])
     return render_template('roster.html', mlb=mlb_games, coaches=coaches, players=players)
 
-@app.route('/favorite/<id>')
-def favorite_team_pick(id):
-    # save to database
-    print(id)
+
+
+#---   User Dash   ---------------------------------------------------
+@app.route('/dashboard')
+def user_dashboard():
+    print('stuff')
+    return render_template('user_dashboard')
+
+
+
+#---   Picking a favorite team ----------------------------------
+@app.route('/favorite/<id>/<team_name>')
+def favorite_team_pick(id, team_name):
+    print(id, team_name)
 
     return redirect('/nfl')
+
+
+#---   Registering Account   -----------------------------------------------
+@app.route('/register', methods=["GET", "POST"])
+def register_account():
+    if request.method == 'POST':
+        if not User.validate_register(request.form):
+            return redirect('/sign-up')
+        
+        if request.form['password'] != request.form['confirm_password']:
+            flash("Passwords do not match.", "register_error")
+            return redirect('/sign-up')
+        
+        existing_user = User.get_email({"email": request.form['email']})
+        if existing_user:
+            flash("Email already exists. Please log in.", "register_error")
+            return redirect('/sign-up')
+        
+        pw_hash = bcrypt.generate_password_hash(request.form['password'])
+        register_user = {
+            "name": request.form["name"],
+            "email": request.form["email"],
+            "password": pw_hash
+        }
+        User.save_user(register_user)
+        flash("You have been registered! Please log in.", "register_success")
+        return redirect('/login')
+    
+    return render_template('login.html')
+
+
+
+#---   Login   ------------------------------------------------------
+@app.route('/submit_login', methods=['POST'])
+def submit_login():
+    if not User.validate_login(request.form):
+        print('fail 1')
+        return redirect('/login')
+    
+    user = User.get_email({"email": request.form['email']})
+    
+    if user and bcrypt.check_password_hash(user.password, request.form['password']):
+        session['user_id'] = user.id
+        session['name'] = user.name
+        session["email"] = user.email
+        flash("Login was successful!", "login_success")
+        print('success')
+        return redirect('/dashboard')
+    
+    flash("Your Email/Password combination doesn't match or email not found.", "login_error")
+    print('fail 2')
+    return redirect('/login')
+
+
+
+#---   Logout Of Dashboard   -----------------------------------------------
+@app.route('/logout')
+def logout():
+    session.clear()
+    flash("You have been logged out.", "logout_info")
+    return redirect("/login")
+
+

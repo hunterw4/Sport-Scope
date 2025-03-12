@@ -49,23 +49,31 @@
           <div class="card text-dark" id="login-card">
             <h2 id="login">Login</h2>
             <!-- Flash warnings -->
-              {% with messages = get_flashed_messages(with_categories=True) %}
-                {% if messages %}
-                  {% for category, message in messages %}
-                    {% if category == 'login' %}
-                    <p class="error"> {{ message }}</p>
-                    {% endif %}
-                  {% endfor %}
-                {% endif %}
-            {% endwith %}
-            <form action="/login" method="POST">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div style="display: none" id="login-errors">
+              {% for category, message in messages %} {% if 'login' in
+              category%}
+              <script>
+                document.getElementById("login-errors").style.display =
+                  "block";
+              </script>
+              {% endif %} {% if category == 'login_error' %}
+              <div class="alert alert-danger">{{ message }}</div>
+              {% elif category == 'login_success' %}
+              <div class="alert alert-success">{{ message }}</div>
+              {% endif %} {% endfor %}
+            </div>
+
+            {% endif %} {% endwith %}
+            <form action="/submit_login" method="POST">
                 <div class="form-group">
                 <label for="exampleInputEmail2">Email address</label>
                 <input type="email" class="form-control" id="exampleInputEmail2" name="email" aria-describedby="emailHelp" placeholder="Enter email">
                 </div>
                 <div class="form-group">
                 <label for="exampleInputPassword3">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword3" name="input_password" placeholder="Password">
+                <input type="password" class="form-control" id="exampleInputPassword3" name="password" placeholder="Password">
                 </div>
                 <div class="form-group form-check">
                 </div>
