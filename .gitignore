@@ -7,7 +7,9 @@ __pycache__/
 # Virtual environments (if you use one)
 venv/
 env/
-.env
+
+# commented out the .env because it is good practice to nomrally have it ignored but for the sake of this assignment the teacher needs the api keys and host keys to make it work.
+# .env
 
 # macOS junk
 .DS_Store
