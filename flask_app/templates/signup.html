@@ -23,23 +23,26 @@
                   </button>
                   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                       <li><a class="dropdown-item" href="/nfl">NFL</a></li>
-                      <li><a class="dropdown-item" href="#">MLB</a></li>
-                      <li><a class="dropdown-item" href="#">PGA</a></li>
+                      <li><a class="dropdown-item" href="#">Coming Soon</a></li>
+                      <li><a class="dropdown-item" href="#">Coming Soon</a></li>
                   </ul>
               </li>
               <li class="nav-item">
                   <img src="{{ url_for('static', filename='images/logo.png') }}" height="80px">
               </li>
               <li class="nav-item">
-                  {% if logged_in %}
-                      <a class="nav-link button" href="/logout">Logout</a>
-                  {% elif not logged_in %}
-                      <a class="nav-link" href="/login">Login</a>
-                      <li class="nav-item">
-                          <a class="nav-link button" href="/sign-up">Sign Up!</a>
-                      </li>
-                  {% endif %}
-              </li>
+                {% if session.get('user_id') %}
+                    <a href="/dashboard" class="nav-link">Account</a>
+                    <li class="nav-item">
+                        <a class="nav-link button" href="/logout">Logout</a>
+                    </li>
+                {% else %}
+                  <a class="nav-link" href="/login">Login</a>
+                  <li class="nav-item">
+                      <a class="nav-link button" href="/sign-up">Sign Up!</a>
+                  </li>
+                {% endif %}
+            </li>
           </ul>
       </div>
   </nav>
@@ -49,20 +52,26 @@
         <div class="card text-dark" id="signup-card">
             <h2 id="register">Register</h2>
             <!-- Flash warnings -->
-            {% with messages = get_flashed_messages(with_categories=True) %}
-                {% if messages %}
-                  {% for category, message in messages %}
-                        {% if category != 'login' %}
-                        <p class="error"> {{ message }}</p>
-                        {% endif %}
+            {% with messages = get_flashed_messages(category_filter =
+                ['register_error', 'register_success']) %} {% if messages %} {%
+                with error_messages = get_flashed_messages(category_filter =
+                ['register_error']) %}
+                <div
+                  class="alert alert-{{'danger' if error_messages else 'success'}}"
+                  id="register-errors"
+                >
+                  {% endwith %} {% for message in messages %}
+  
+                  <div>{{ message }}</div>
+  
                   {% endfor %}
-                {% endif %}
-            {% endwith %}
+                </div>
+                {% endif %} {% endwith %}
 
             <form action="/register" method="POST">
                 <div class="form-group">
-                <label for="fname">Name</label>
-                <input type="text" class="form-control" id="fname" name="name" value="{{ session_name }}">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{ session_name }}">
       
                 <label for="exampleInputEmail1">Email address</label>
                 <input type="email" class="form-control" id="exampleInputEmail1" name="email" value="{{ session_email_input }}" aria-describedby="emailHelp" placeholder="Enter email">
@@ -82,4 +91,5 @@
           </div>
     </div>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </html>

@@ -27,22 +27,23 @@
                       <li><a class="dropdown-item" href="#">Coming Soon</a></li>
                   </ul>
               </li>
+              
               <li class="nav-item">
                   <img src="{{ url_for('static', filename='images/logo.png') }}" height="80px">
               </li>
               <li class="nav-item">
-                {% if session.get('user_id') %}
-                    <a href="/dashboard" class="nav-link">Account</a>
-                    <li class="nav-item">
-                        <a class="nav-link button" href="/logout">Logout</a>
-                    </li>
-                {% else %}
-                  <a class="nav-link" href="/login">Login</a>
-                  <li class="nav-item">
-                      <a class="nav-link button" href="/sign-up">Sign Up!</a>
-                  </li>
-                {% endif %}
-          </li>
+                    {% if session.get('user_id') %}
+                        <a href="/dashboard" class="nav-link">Account</a>
+                        <li class="nav-item">
+                            <a class="nav-link button" href="/logout">Logout</a>
+                        </li>
+                    {% else %}
+                      <a class="nav-link" href="/login">Login</a>
+                      <li class="nav-item">
+                          <a class="nav-link button" href="/sign-up">Sign Up!</a>
+                      </li>
+                    {% endif %}
+              </li>
           </ul>
       </div>
   </nav>
@@ -50,40 +51,32 @@
 <body>
     <div class="container">
           <div class="card text-dark" id="login-card">
-            <h2 id="login">Login</h2>
-            <!-- Flash warnings -->
-            {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-            <div style="display: none" id="login-errors">
-              {% for category, message in messages %} {% if 'login' in
-              category%}
-              <script>
-                document.getElementById("login-errors").style.display =
-                  "block";
-              </script>
-              {% endif %} {% if category == 'login_error' %}
-              <div class="alert alert-danger">{{ message }}</div>
-              {% elif category == 'login_success' %}
-              <div class="alert alert-success">{{ message }}</div>
-              {% endif %} {% endfor %}
-            </div>
-
-            {% endif %} {% endwith %}
-            <form action="/submit_login" method="POST">
-                <div class="form-group">
-                <label for="exampleInputEmail2">Email address</label>
-                <input type="email" class="form-control" id="exampleInputEmail2" name="email" aria-describedby="emailHelp" placeholder="Enter email">
-                </div>
-                <div class="form-group">
-                <label for="exampleInputPassword3">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword3" name="password" placeholder="Password">
-                </div>
-                <div class="form-group form-check">
-                </div>
-                <button type="submit" class="btn btn-success">Submit</button>
-            </form>
+            <h2>Welcome {{ session['name'] }}!</h2>
+            <h3>Favorite Team</h3>
+            {% if user.favorite_team_name %}
+            <a href="/nfl/{{ user.favorite_team_id }}">{{ user.favorite_team_name }}</a>
+        {% else %}
+            <a href="/nfl">Pick a team!</a>
+        {% endif %}
+        
+            
+            <table>
+                <thead>
+                    <tr>
+                        <td class="text-center"><strong>Favorite Player<strong></td>
+                        <td class="text-center"><strong>Postition<strong></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center">{{user.favorite_player}}</td>
+                        <td class="text-center">{{user.player_position}}</td>
+                    </tr>
+                </tbody>
+            </table>
           </div> 
     </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </html>
