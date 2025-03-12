@@ -17,7 +17,7 @@ TODAY = raw_today.strftime("%Y/%m/%d")
 # Sports API KEY
 API_KEY = os.environ.get('NEWS_API')
 SPORTS_API = os.environ.get('SPORTS_API')
-print(API_KEY)
+
 
 # Endpoints
 NEWS_BASE_URL = "https://newsapi.org/v2/top-headlines"
@@ -125,35 +125,50 @@ def user_dashboard():
         return render_template('user_dashboard.html', user=user)
 
 
-# #---   Picking a favorite team ----------------------------------
+#---   Picking a favorite team ----------------------------------
 
-@app.route('/favorite', methods=['POST'])
+@app.route('/favorite_team', methods=['POST'])
 def favorite_team_pick():
-    updated_data = {
-        "id" : session['user_id'],
-        "favorite_team_id" : request.form["favorite_team_id"],
-        "favorite_team_name" : request.form["favorite_team_name"]
-    }
-    print(updated_data)
-    result = User.update_favorite_team(updated_data)
-    print(result)
-        
-    return redirect('/dashboard')
+    if 'user_id' in session:
+    
+        updated_data = {
+            "id" : session['user_id'],
+            "favorite_team_id" : request.form["favorite_team_id"],
+            "favorite_team_name" : request.form["favorite_team_name"]
+        }
+        print(updated_data)
+        result = User.update_favorite_team(updated_data)
+        print(result)
+
+        return redirect('/dashboard')
+    else:
+        flash("Must log in first","warning" )
+        return redirect('/nfl')
+
+
+
+
+# #---   Picking Favorite Player    ----------------------------------
+
+@app.route('/favorite_player', methods=['POST'])
+def favorite_player():
+    if 'user_id' in session:
+        updated_data = {
+            "id" : session['user_id'],
+            "player_position" : request.form["player_position"],
+            "favorite_player" : request.form["player_name"]
+        }
+        print(updated_data)
+        result = User.update_favorite_player(updated_data)
+        print(result)
+
+        return redirect('/dashboard')
+    else:
+        flash("Must log in first","warning" )
+        return redirect('/nfl')
+
 
     
-
-# @app.route('/favorite/<team_id>/<team_name>', methods=["POST"])
-# def favorite_team_pick(team_id, team_name):
-#     print(team_id, team_name)
-#     updated_data = {
-#         'favorite_team_id' : team_id,
-#         'favorite_team_name' : team_name
-#     }
-#     if User.update_favorite_team(updated_data):
-#         print(updated_data)
-#         return redirect('/user_dashboard')
-
-#     return redirect('/user_dashboard')
 
 
 #---   Registering Account   -----------------------------------------------
@@ -180,7 +195,7 @@ def register_account():
         }
         User.save_user(register_user)
         flash("You have been registered! Please log in.", "register_success")
-        return redirect('/login')
+        return redirect('/sign-up')
     
     return render_template('login.html')
 

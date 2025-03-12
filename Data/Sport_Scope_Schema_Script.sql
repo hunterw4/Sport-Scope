@@ -24,6 +24,8 @@ CREATE TABLE IF NOT EXISTS `sport_scope`.`users` (
   `password` VARCHAR(255) NULL,
   `favorite_team_id` VARCHAR(255) NULL,
   `favorite_team_name` VARCHAR(255) NULL,
+  `favorite_player` VARCHAR(255) NULL,
+  `player_position` VARCHAR(45) NULL,
   `created_at` DATETIME NULL,
   `updated_at` DATETIME NULL,
   PRIMARY KEY (`id`))

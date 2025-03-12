@@ -14,6 +14,8 @@ class User:
         self.password = data['password']
         self.favorite_team_id = data['favorite_team_id']
         self.favorite_team_name = data['favorite_team_name']
+        self.favorite_player = data['favorite_player']
+        self.player_position = data['player_position']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
 
@@ -31,7 +33,7 @@ class User:
     
 
 
-#---   Query Save User   ---------------------------------------------------
+    #---   Query Save User   ---------------------------------------------------
     @classmethod
     def save_user(cls, data):
         query = """
@@ -42,10 +44,19 @@ class User:
     
 
 
-    #---   Query Save User   ---------------------------------------------------
+    #---   Query Save Favorite Team   ---------------------------------------------------
     @classmethod
     def update_favorite_team(cls, data):
         query = """UPDATE users SET favorite_team_id=%(favorite_team_id)s, favorite_team_name=%(favorite_team_name)s, updated_at=NOW() WHERE id=%(id)s;
+                """
+        return MySQLConnection(cls.schema).query_db(query, data)
+    
+
+
+    #---   Query Save Favorite Player   ---------------------------------------------------
+    @classmethod
+    def update_favorite_player(cls, data):
+        query = """UPDATE users SET favorite_player=%(favorite_player)s, player_position=%(player_position)s, updated_at=NOW() WHERE id=%(id)s;
                 """
         return MySQLConnection(cls.schema).query_db(query, data)
     
@@ -110,14 +121,6 @@ class User:
 
 
 #---   Validate Login   ----------------------------------------------------
-    # @staticmethod
-    # def validate_login(user):
-    #     is_valid = True
-    #     if len(user['email']) < 1 or len(user['password']) < 1:
-    #         flash("Email and password are required.", "login_error")
-    #         is_valid = False
-    #     return is_valid
-    
     @staticmethod
     def validate_login(user):
         is_valid = True
