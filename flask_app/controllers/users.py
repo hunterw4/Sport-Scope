@@ -1,6 +1,6 @@
 # User routing will go here, home, account, etc...
 from dateutil.utils import today
-from flask import Flask, render_template, redirect, request, flash, session
+from flask import Flask, render_template, redirect, request, flash, session, make_response
 from flask_bcrypt import Bcrypt 
 from flask_app import app
 from flask_app.models.user import User
@@ -17,6 +17,7 @@ TODAY = raw_today.strftime("%Y/%m/%d")
 # Sports API KEY
 API_KEY = os.environ.get('NEWS_API')
 SPORTS_API = os.environ.get('SPORTS_API')
+print(API_KEY)
 
 # Endpoints
 NEWS_BASE_URL = "https://newsapi.org/v2/top-headlines"
@@ -40,6 +41,8 @@ mlb_data = {
 news_data = {
     "articles": [None, None]
     }
+
+
 
 # MLB Scores params
 mlb_headers = {"accept": "application/json"}
@@ -103,24 +106,54 @@ def team_roster(id):
     
     coaches = roster_data.get('coaches', [])
     players = roster_data.get('players', [])
-    return render_template('roster.html', mlb=mlb_games, coaches=coaches, players=players)
+    if response:
+        return render_template('roster.html', mlb=mlb_games, coaches=coaches, players=players)
+    else:
+        return render_template('roster.html')
 
 
 
 #---   User Dash   ---------------------------------------------------
 @app.route('/dashboard')
 def user_dashboard():
-    print('stuff')
-    return render_template('user_dashboard')
+    if 'user_id' in session:
+        data = {
+            "id" : session['user_id']
+        }
+        print(data)
+        user = User.get_id(data)
+        return render_template('user_dashboard.html', user=user)
 
 
+# #---   Picking a favorite team ----------------------------------
 
-#---   Picking a favorite team ----------------------------------
-@app.route('/favorite/<id>/<team_name>')
-def favorite_team_pick(id, team_name):
-    print(id, team_name)
+@app.route('/favorite', methods=['POST'])
+def favorite_team_pick():
+    updated_data = {
+        "id" : session['user_id'],
+        "favorite_team_id" : request.form["favorite_team_id"],
+        "favorite_team_name" : request.form["favorite_team_name"]
+    }
+    print(updated_data)
+    result = User.update_favorite_team(updated_data)
+    print(result)
+        
+    return redirect('/dashboard')
 
-    return redirect('/nfl')
+    
+
+# @app.route('/favorite/<team_id>/<team_name>', methods=["POST"])
+# def favorite_team_pick(team_id, team_name):
+#     print(team_id, team_name)
+#     updated_data = {
+#         'favorite_team_id' : team_id,
+#         'favorite_team_name' : team_name
+#     }
+#     if User.update_favorite_team(updated_data):
+#         print(updated_data)
+#         return redirect('/user_dashboard')
+
+#     return redirect('/user_dashboard')
 
 
 #---   Registering Account   -----------------------------------------------

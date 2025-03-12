@@ -42,6 +42,17 @@ class User:
     
 
 
+    #---   Query Save User   ---------------------------------------------------
+    @classmethod
+    def update_favorite_team(cls, data):
+        query = """UPDATE users SET favorite_team_id=%(favorite_team_id)s, favorite_team_name=%(favorite_team_name)s, updated_at=NOW() WHERE id=%(id)s;
+                """
+        return MySQLConnection(cls.schema).query_db(query, data)
+    
+
+    
+
+
 #---   Get User ID   -------------------------------------------------------
     @classmethod
     def get_id(cls, user_id):

@@ -76,11 +76,21 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td class="text-center"><img class="team-logo d-block mx-auto" src="{{ url_for('static', filename='images/bills.png') }}" alt="Bills Logo"></td>
-        <td class="text-center"><a href="/nfl/768c92aa-75ff-4a43-bcc0-f2798c2e1724" class="plain-link">Buffalo Bills</a></td>
-        <td class="text-center"><a href="/favorite/768c92aa-75ff-4a43-bcc0-f2798c2e1724/Buffalo Bills" class="plain-link">Favorite</a></td>
-      </tr>
+        <form action="/favorite" method="POST">
+          <tr>
+            <td class="text-center">
+              <img class="team-logo d-block mx-auto" src="{{ url_for('static', filename='images/bills.png') }}" alt="Bills Logo">
+            </td>
+            <td class="text-center">
+            <a href="/nfl/768c92aa-75ff-4a43-bcc0-f2798c2e1724" class="plain-link">Buffalo Bills</a>
+            </td>
+            <td class="text-center">
+              <input type="hidden" name="favorite_team_id" value="768c92aa-75ff-4a43-bcc0-f2798c2e1724">
+              <input type="hidden" name="favorite_team_name" value="Buffalo Bills">
+              <button type="submit" class="plain-link">Favorite</button>
+            </td>
+          </tr>
+        </form>
       <tr>
         <td class="text-center"><img class="team-logo d-block mx-auto" src="{{ url_for('static', filename='images/dolphins.png') }}" alt="Dolphins Logo"></td>
         <td class="text-center"><a href="/nfl/4809ecb0-abd3-451d-9c4a-92a90b83ca06" class="plain-link">Miami Dolphins</a></td>

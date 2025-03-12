@@ -9,6 +9,7 @@ pymysql = "*"
 flask = "*"
 python-dateutil = "*"
 requests = "*"
+python-dotenv = "*"
 
 [dev-packages]
 

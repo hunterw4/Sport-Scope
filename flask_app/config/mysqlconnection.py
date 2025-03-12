@@ -1,12 +1,13 @@
 # MySQL connection will go here
 import pymysql.cursors
+import os
 
 class MySQLConnection:
     def __init__(self, db):
         self.connection = pymysql.connect(
-            host='localhost',
-            user='root',
-            password='root',  
+            host=os.environ.get('DATA_BASE_HOST'),
+            user=os.environ.get('DATA_BASE_USER'),
+            password=os.environ.get('DATA_BASE_PASSWORD'),  
             db=db,
             charset='utf8mb4',
             cursorclass=pymysql.cursors.DictCursor,
