@@ -8,8 +8,11 @@ __pycache__/
 venv/
 env/
 
-# commented out the .env because it is good practice to nomrally have it ignored but for the sake of this assignment the teacher needs the api keys and host keys to make it work.
-# .env
+# .env was intentionally tracked while this was a graded assignment, so the instructor
+# could run it with working credentials. That is no longer needed, and the credentials
+# it contained were exposed on origin/main as a result — see .env.example for the keys
+# you need to supply. Untracked and re-ignored 2026-08-07.
+.env
 
 # macOS junk
 .DS_Store
